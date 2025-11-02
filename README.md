@@ -18,7 +18,7 @@
 ## Features
 
 ### Keyboard Shortcuts 
-- `Ctrl+1` (or `Cmd+1` on Mac): **Create new row** and set Company Name
+- `Ctrl+1`: **Create new row** and set Company Name
 - `Ctrl+2`: Set Website for current row
 - `Ctrl+3`: Set LinkedIn for current row
 - `Ctrl+4`: Set Team Member 1 for current row
