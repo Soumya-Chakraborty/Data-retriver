@@ -26,11 +26,17 @@ async function initializeExtension() {
 // Keyboard shortcut listener
 chrome.commands.onCommand.addListener((command) => {
   const columnMap = {
-    'ctrl+1': { id: 1, name: 'CompanyName', newRow: true },
-    'ctrl+2': { id: 2, name: 'Website', newRow: false },
-    'ctrl+3': { id: 3, name: 'LinkedIn', newRow: false },
-    'ctrl+4': { id: 4, name: 'TeamMember1', newRow: false },
-    'ctrl+5': { id: 5, name: 'TeamMember2', newRow: false }
+    'ctrl+shift+1': { id: 1, name: 'CompanyName', newRow: true },
+    'ctrl+shift+2': { id: 2, name: 'Website', newRow: false },
+    'ctrl+shift+3': { id: 3, name: 'LinkedIn', newRow: false },
+    'ctrl+shift+4': { id: 4, name: 'TeamMember1', newRow: false },
+    'ctrl+shift+5': { id: 5, name: 'TeamMember2', newRow: false },
+    // Add Mac Command key equivalents
+    'cmd+shift+1': { id: 1, name: 'CompanyName', newRow: true },
+    'cmd+shift+2': { id: 2, name: 'Website', newRow: false },
+    'cmd+shift+3': { id: 3, name: 'LinkedIn', newRow: false },
+    'cmd+shift+4': { id: 4, name: 'TeamMember1', newRow: false },
+    'cmd+shift+5': { id: 5, name: 'TeamMember2', newRow: false }
   };
   
   const column = columnMap[command];
@@ -39,7 +45,8 @@ chrome.commands.onCommand.addListener((command) => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { 
         action: 'getSelection', 
-        column: column 
+        column: column,
+        command: command  // Pass the command to identify the key combination used
       });
     });
   }
@@ -48,7 +55,7 @@ chrome.commands.onCommand.addListener((command) => {
 // Handle messages from popup and content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveSelection') {
-    const { text, column } = request;
+    const { text, column, command } = request;
     
     // Normalize data
     const normalizedText = normalizeData(text, column.name);
@@ -98,7 +105,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
     // Show feedback
     const rowNumber = rowData.length;
-    showNotification(`${column.name} saved to row #${rowNumber} (created by Ctrl+${column.id})`);
+    // Format the command for display (e.g., "ctrl+shift+1" becomes "Ctrl+Shift+1")
+    const formattedCommand = command
+      .split('+')
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('+');
+      
+    showNotification(`${column.name} saved to row #${rowNumber} (by ${formattedCommand})`);
   } 
   // Handle reset current row request from popup
   else if (request.action === 'resetCurrentRow') {

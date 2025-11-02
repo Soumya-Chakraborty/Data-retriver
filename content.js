@@ -7,7 +7,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       chrome.runtime.sendMessage({
         action: 'saveSelection',
         text: selection,
-        column: request.column
+        column: request.column,
+        command: request.command
       });
     } else {
       showOverlay('No text selected. Please select text and try again.', 'warning');

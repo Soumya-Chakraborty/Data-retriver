@@ -32,38 +32,38 @@
     "128": "icons/icon128.png"
   },
   "commands": {
-    "ctrl+1": {
+    "ctrl+shift+1": {
       "suggested_key": {
-        "default": "Ctrl+1",
-        "mac": "Ctrl+1"
+        "default": "Ctrl+Shift+1",
+        "mac": "Cmd+Shift+1"
       },
       "description": "Create new row and set CompanyName"
     },
-    "ctrl+2": {
+    "ctrl+shift+2": {
       "suggested_key": {
-        "default": "Ctrl+2",
-        "mac": "Ctrl+2"
+        "default": "Ctrl+Shift+2",
+        "mac": "Cmd+Shift+2"
       },
       "description": "Set Website for current row"
     },
-    "ctrl+3": {
+    "ctrl+shift+3": {
       "suggested_key": {
-        "default": "Ctrl+3",
-        "mac": "Ctrl+3"
+        "default": "Ctrl+Shift+3",
+        "mac": "Cmd+Shift+3"
       },
       "description": "Set LinkedIn for current row"
     },
-    "ctrl+4": {
+    "ctrl+shift+4": {
       "suggested_key": {
-        "default": "Ctrl+4",
-        "mac": "Ctrl+4"
+        "default": "Ctrl+Shift+4",
+        "mac": "Cmd+Shift+4"
       },
       "description": "Set TeamMember1 for current row"
     },
-    "ctrl+5": {
+    "ctrl+shift+5": {
       "suggested_key": {
-        "default": "Ctrl+5",
-        "mac": "Ctrl+5"
+        "default": "Ctrl+Shift+5",
+        "mac": "Cmd+Shift+5"
       },
       "description": "Set TeamMember2 for current row"
     }
