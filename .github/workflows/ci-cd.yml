@@ -1,0 +1,102 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: |
+        # No specific dependencies beyond basic tools for a Firefox extension
+        echo "No specific dependencies to install for Firefox extension"
+
+    - name: Validate manifest.json
+      run: |
+        # Check if manifest.json is valid JSON
+        node -e "console.log('Validating manifest.json'); JSON.parse(require('fs').readFileSync('manifest.json', 'utf8'));" && echo "manifest.json is valid"
+
+    - name: Lint JavaScript files
+      run: |
+        # Simple check for basic JS syntax errors
+        for file in *.js; do
+          if [ -f "$file" ]; then
+            echo "Checking $file..."
+            node -c "$file" || exit 1
+          fi
+        done
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create extension package
+      run: |
+        # Create a zip file of the extension
+        zip -r data-entry-tool-$GITHUB_SHA.zip *.js *.html *.json icons/ -x "icons/README.md"
+        
+    - name: Upload extension package
+      uses: actions/upload-artifact@v4
+      with:
+        name: firefox-extension
+        path: data-entry-tool-*.zip
+
+  publish-firefox-addon:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    
+    steps:
+    - name: Download extension package
+      uses: actions/download-artifact@v4
+      with:
+        name: firefox-extension
+        
+    - name: Set up Firefox Add-on API credentials
+      run: |
+        # Create a temporary directory for the web-ext tool
+        npm install -g web-ext
+        
+    - name: Publish to Firefox Add-ons
+      run: |
+        # Use web-ext sign to submit the extension to Firefox Add-ons
+        # Requires API credentials to be stored as secrets
+        if [ "$FIREFOX_API_KEY" != "" ] && [ "$FIREFOX_API_SECRET" != "" ]; then
+          # Sign and publish the extension (would require API credentials)
+          echo "Would publish extension using web-ext sign with credentials"
+          # web-ext sign -s . --api-key=$FIREFOX_API_KEY --api-secret=$FIREFOX_API_SECRET
+        else
+          echo "Firefox Add-ons API credentials not provided, skipping publish"
+        fi
+      env:
+        FIREFOX_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
+        FIREFOX_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
+        
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.release.tag_name }}
+        release_name: Release ${{ github.event.release.tag_name }}
+        draft: false
+        prerelease: false

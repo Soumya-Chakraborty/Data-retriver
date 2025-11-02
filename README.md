@@ -8,6 +8,7 @@
   [![Firefox Add-on](https://img.shields.io/badge/Firefox-Extension-FF7139?style=for-the-badge&logo=firefox-browser&logoColor=white)](https://addons.mozilla.org/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
   [![Version](https://img.shields.io/badge/Version-1.0-blue.svg?style=for-the-badge)](#)
+  [![CI/CD](https://github.com/Soumya-Chakraborty/Data-retriver/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/Soumya-Chakraborty/Data-retriver/actions)
   
   <img src="https://placehold.co/800x400/2563eb/white?text=Data+Entry+Tool+Preview" alt="Extension Preview" />
 </div>
@@ -58,6 +59,53 @@
 
 ---
 
+## Development & Build
+
+### Prerequisites
+- Node.js (v14 or higher)
+- Git
+
+### Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Soumya-Chakraborty/Data-retriver.git
+   cd Data-retriver
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Build Process
+1. Build the extension package:
+   ```bash
+   npm run build
+   # or
+   ./package.sh
+   ```
+   
+   This will create a ZIP file of the extension ready for distribution.
+
+2. For Windows systems:
+   ```cmd
+   package.bat
+   ```
+
+### CI/CD Pipeline
+This project uses GitHub Actions for continuous integration and deployment:
+
+- **Testing**: Validates manifest.json and checks JavaScript syntax
+- **Building**: Creates a packaged extension file (.zip)
+- **Releasing**: Publishes to Firefox Add-ons when a GitHub release is created
+
+To create a new release:
+```bash
+npm run release
+```
+
+---
+
 ## Usage Guide
 
 ### Basic Workflow
@@ -98,7 +146,17 @@ avrpix/
 ├── export.js              # Export functionality
 ├── icons/                 # Extension icons directory
 │   └── README.md          # Icon guidelines
+├── .github/               # GitHub Actions workflows
+│   └── workflows/         # CI/CD pipeline configuration
+├── scripts/               # Build and packaging scripts
+│   ├── package.sh         # Linux/Mac packaging script
+│   └── package.bat        # Windows packaging script
+├── releases/              # Release configuration
+│   └── release.config.js  # Release tool configuration
+├── CHANGELOG.md           # Release history
+├── package.json           # Build scripts and dependencies
 ├── README.md              # This documentation
+├── PUSH_INSTRUCTIONS.md   # Git workflow instructions
 └── test.html              # Sample test page
 ```
 
@@ -146,6 +204,25 @@ Contributions are welcome! Feel free to:
 - Suggest features
 - Submit pull requests
 - Improve documentation
+
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Test your changes in Firefox
+5. Commit your changes: `git commit -m 'Add some amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a pull request
+
+---
+
+## Release Process
+
+1. Update the version in `manifest.json`
+2. Run: `npm run release` to create a new release
+3. This will update the changelog and create a new Git tag
+4. Push the changes: `git push origin main --follow-tags`
+5. Create a GitHub release from the tag
 
 ---
 

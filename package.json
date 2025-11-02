@@ -1,0 +1,44 @@
+{
+  "name": "data-entry-tool-firefox-extension",
+  "version": "1.0.0",
+  "description": "Keyboard shortcut-based tool to streamline data entry from web pages into structured CSV/JSON formats",
+  "main": "background.js",
+  "scripts": {
+    "build": "bash package.sh",
+    "package": "bash package.sh",
+    "test": "echo \"No automated tests implemented yet\" && exit 0",
+    "lint": "echo \"No linting setup yet\" && exit 0",
+    "release": "standard-version",
+    "sign": "echo \"Use web-ext to sign the extension for Firefox Add-ons\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Soumya-Chakraborty/Data-retriver.git"
+  },
+  "keywords": [
+    "firefox",
+    "extension",
+    "data-entry",
+    "productivity",
+    "keyboard-shortcuts",
+    "csv",
+    "json"
+  ],
+  "author": "Soumya-Chakraborty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Soumya-Chakraborty/Data-retriver/issues"
+  },
+  "homepage": "https://github.com/Soumya-Chakraborty/Data-retriver#readme",
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "standard-version": {
+    "t": "v"
+  }
+}
