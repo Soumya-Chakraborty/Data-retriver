@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "Data Entry Tool",
+  "version": "1.0",
+  "description": "Shortcuts-based tool to streamline data entry from web pages",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "ctrl+1": {
+      "suggested_key": {
+        "default": "Ctrl+1",
+        "mac": "Command+1"
+      },
+      "description": "Create new row and set CompanyName"
+    },
+    "ctrl+2": {
+      "suggested_key": {
+        "default": "Ctrl+2",
+        "mac": "Command+2"
+      },
+      "description": "Set Website for current row"
+    },
+    "ctrl+3": {
+      "suggested_key": {
+        "default": "Ctrl+3",
+        "mac": "Command+3"
+      },
+      "description": "Set LinkedIn for current row"
+    },
+    "ctrl+4": {
+      "suggested_key": {
+        "default": "Ctrl+4",
+        "mac": "Command+4"
+      },
+      "description": "Set TeamMember1 for current row"
+    },
+    "ctrl+5": {
+      "suggested_key": {
+        "default": "Ctrl+5",
+        "mac": "Command+5"
+      },
+      "description": "Set TeamMember2 for current row"
+    }
+  }
+}

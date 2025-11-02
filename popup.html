@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Data Entry Tool</title>
+  <style>
+    body {
+      width: 400px;
+      min-height: 500px;
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      font-size: 18px;
+      margin: 0;
+      color: #333;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .stat-box {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2196F3;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .controls {
+      margin-bottom: 20px;
+    }
+    
+    .export-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    
+    .export-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+    
+    .export-btn:hover {
+      background-color: #0b7dda;
+    }
+    
+    .sheets-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    .sheets-btn:hover {
+      background-color: #388E3C;
+    }
+    
+    .notification {
+      display: none;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      color: white;
+      text-align: center;
+    }
+    
+    .notification.error {
+      background-color: #f44336;
+    }
+    
+    .notification.success {
+      background-color: #4CAF50;
+    }
+    
+    .notification.warning {
+      background-color: #FF9800;
+    }
+    
+    .data-table-container {
+      max-height: 250px;
+      overflow-y: auto;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 8px;
+      text-align: left;
+      font-size: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #f1f1f1;
+      font-weight: bold;
+    }
+    
+    tr.invalid-row {
+      background-color: #ffebee;
+    }
+    
+    tr.duplicate-row {
+      background-color: #fff3e0;
+    }
+    
+    .instructions {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .instructions ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+    
+    .instructions li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Data Entry Tool</h1>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-value" id="rowCount">0</div>
+      <div class="stat-label">Rows</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="invalidCount">0</div>
+      <div class="stat-label">Invalid</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="duplicateCount">0</div>
+      <div class="stat-label">Duplicates</div>
+    </div>
+  </div>
+  
+  <div class="controls">
+    <div class="export-buttons">
+      <button class="export-btn" id="exportCSV">Export CSV</button>
+      <button class="export-btn" id="exportJSON">Export JSON</button>
+      <button class="sheets-btn" id="exportSheets">Export to Google Sheets</button>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification"></div>
+  
+  <div class="data-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40%;">Company</th>
+          <th style="width: 20%;">Website</th>
+          <th style="width: 20%;">LinkedIn</th>
+          <th style="width: 20%;">Team Member</th>
+        </tr>
+      </thead>
+      <tbody id="dataTableBody">
+        <!-- Data rows will be inserted here -->
+      </tbody>
+    </table>
+    <div id="paginationControls" style="display: flex; justify-content: space-between; padding: 10px; background-color: #f1f1f1; border-top: 1px solid #ddd; font-size: 12px;">
+      <button id="prevPage" style="padding: 5px 10px;">&lt; Prev</button>
+      <span id="pageInfo">Page 1 of 1</span>
+      <button id="nextPage" style="padding: 5px 10px;">Next &gt;</button>
+    </div>
+  </div>
+  
+  <div style="margin-top: 10px; display: flex; gap: 5px;">
+    <button id="resetData" style="flex: 1; padding: 8px; background-color: #f44336; color: white;">Reset All Data</button>
+    <button id="startFromFirst" style="flex: 1; padding: 8px; background-color: #FF9800; color: white;">Start from First</button>
+  </div>
+  
+  <div class="instructions">
+    <strong>How to use:</strong>
+    <ul>
+      <li>Select text on any webpage</li>
+      <li>Press <strong>Ctrl+1</strong> to create new row & set Company Name</li>
+      <li>Press <strong>Ctrl+2-5</strong> to set other fields in same row</li>
+      <li>Press <strong>Ctrl+1</strong> again for next company</li>
+      <li>Export collected data using buttons above</li>
+    </ul>
+  </div>
+
+  <script src="popup.js"></script>
+  <script src="export.js"></script>
+</body>
+</html>
