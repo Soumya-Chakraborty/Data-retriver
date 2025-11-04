@@ -26,20 +26,21 @@ async function initializeExtension() {
 // Keyboard shortcut listener
 chrome.commands.onCommand.addListener((command) => {
   const columnMap = {
-    'ctrl+shift+1': { id: 1, name: 'CompanyName', newRow: true },
-    'ctrl+shift+2': { id: 2, name: 'Website', newRow: false },
-    'ctrl+shift+3': { id: 3, name: 'LinkedIn', newRow: false },
-    'ctrl+shift+4': { id: 4, name: 'TeamMember1', newRow: false },
-    'ctrl+shift+5': { id: 5, name: 'TeamMember2', newRow: false },
-    // Add Mac Command key equivalents
-    'cmd+shift+1': { id: 1, name: 'CompanyName', newRow: true },
-    'cmd+shift+2': { id: 2, name: 'Website', newRow: false },
-    'cmd+shift+3': { id: 3, name: 'LinkedIn', newRow: false },
-    'cmd+shift+4': { id: 4, name: 'TeamMember1', newRow: false },
-    'cmd+shift+5': { id: 5, name: 'TeamMember2', newRow: false }
+    'create-company': { id: 1, name: 'CompanyName', newRow: true },
+    'set-website': { id: 2, name: 'Website', newRow: false },
+    'set-linkedin': { id: 3, name: 'LinkedIn', newRow: false },
+    'set-team-member1': { id: 4, name: 'TeamMember1', newRow: false },
+    'set-team-member2': { id: 5, name: 'TeamMember2', newRow: false }
   };
   
-  const column = columnMap[command];
+  // Handle both the old and new command formats for backward compatibility
+  let commandKey = command;
+  if (command === '_execute_action') {
+    // This is just opening the popup, ignore it for data entry
+    return;
+  }
+  
+  const column = columnMap[commandKey];
   if (column) {
     // Get currently selected text
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {

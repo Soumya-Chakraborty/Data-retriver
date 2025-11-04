@@ -18,11 +18,11 @@
 ## Features
 
 ### Keyboard Shortcuts 
-- `Ctrl+1`: **Create new row** and set Company Name
-- `Ctrl+2`: Set Website for current row
-- `Ctrl+3`: Set LinkedIn for current row
-- `Ctrl+4`: Set Team Member 1 for current row
-- `Ctrl+5`: Set Team Member 2 for current row
+- `Ctrl+Shift+1` (or `Cmd+Shift+1` on Mac): **Create new row** and set Company Name
+- `Ctrl+Shift+2` (or `Cmd+Shift+2` on Mac): Set Website for current row
+- `Ctrl+Shift+3` (or `Cmd+Shift+3` on Mac): Set LinkedIn for current row
+- `Ctrl+Shift+4` (or `Cmd+Shift+4` on Mac): Set Team Member 1 for current row
+- `Ctrl+Shift+5` (or `Cmd+Shift+5` on Mac): Set Team Member 2 for current row
 
 ### Data Normalization
 - Automatically trims whitespace and removes surrounding punctuation
